@@ -4,3 +4,52 @@
   box-sizing: border-box;
   margin: 0;
 }
+
+:root {
+  --background-main: rgb(36 85 192);
+  --background-main-black: rgb(11 20 44);
+  --background-carton: rgb(158 28 25);
+  --white: #fff;
+}
+
+body {
+  block-size: 100vh;
+  background-image: linear-gradient(
+    to bottom,
+    var(--background-main),
+    var(--background-main-black)
+  );
+}
+
+.carton {
+  background-color: var(--background-carton);
+  inline-size: 300px;
+  block-size: 220px;
+  padding: 5px;
+  box-shadow: 0 0 10px var(--background-main-black);
+  display: flex;
+  flex-direction: column;
+  > h2 {
+    align-content: center;
+    flex-grow: 1;
+    color: var(--white);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  & .carton-numeros {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: 50px;
+    gap: 5px;
+    > div {
+      background-color: var(--white);
+      align-content: center;
+      > p {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+  }
+}
