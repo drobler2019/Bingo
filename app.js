@@ -1,4 +1,6 @@
 (() => {
+  const main = document.querySelector("main");
+  const contenedorNumerosEscogidos = main.querySelector(".numeros-escogidos");
   const templateNumero = document.querySelector("#template-numero-carton");
   const template = document.querySelector("#template-carton");
   const { firstElementChild: jugador } = template.content.cloneNode(true);
@@ -6,7 +8,8 @@
 
   construirCartones("player", jugador, templateNumero);
   construirCartones("cpu", ordenador, templateNumero);
-  document.body.append(jugador, ordenador);
+  main.insertAdjacentElement("afterbegin", jugador);
+  contenedorNumerosEscogidos.insertAdjacentElement("beforebegin", ordenador);
 })();
 
 function construirCartones(nombre, elemento, templateNumero) {
