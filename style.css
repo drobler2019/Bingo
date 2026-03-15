@@ -17,12 +17,14 @@
   --background-main: rgb(36 85 192);
   --background-main-black: rgb(11 20 44);
   --background-carton: rgb(158 28 25);
+  --color-text-elegido: rgb(84 9 13);
   --white: #fff;
   --font-family: "Roboto", sans-serif;
+  --border-radius: 3px;
 }
 
 body {
-  block-size: 100vh;
+  min-block-size: 100vh;
   font-family: var(--font-family);
   background-image: linear-gradient(
     to bottom,
@@ -36,15 +38,15 @@ main {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 300px;
-  align-items: end;
+  align-items: center;
   justify-items: center;
-  row-gap: 80px;
+  row-gap: 20px;
   padding-inline: 50px;
   margin: auto;
-  max-inline-size: 1200px;
+  max-inline-size: 1000px;
   & .bingo {
-    inline-size: 300px;
-    block-size: 300px;
+    inline-size: 240px;
+    block-size: 240px;
     border-radius: 50%;
     border: 7px solid var(--background-main-black);
     background-image: radial-gradient(
@@ -54,15 +56,16 @@ main {
     );
   }
 
-  > :is(div:nth-child(1), div:nth-child(3)) {
-    align-self: center;
-  }
-
   & .numeros-escogidos {
+    display: flex;
+    align-items: start;
+    align-content: start;
+    flex-wrap: wrap;
+    gap: 5px;
     align-self: stretch;
     justify-self: stretch;
     grid-column: 1 / 4;
-    padding-inline: 50px;
+    padding: 10px;
     min-block-size: 250px;
     border: thin solid var(--white);
   }
@@ -70,15 +73,16 @@ main {
 
 .carton {
   background-color: var(--background-carton);
-  inline-size: 300px;
+  inline-size: 280px;
   block-size: 220px;
   padding: 5px;
   box-shadow: 0 0 10px var(--background-main-black);
   display: flex;
   flex-direction: column;
+  border-radius: var(--border-radius);
   > h2 {
+    flex-basis: 120px;
     align-content: center;
-    flex-grow: 1;
     color: var(--white);
     text-transform: uppercase;
     text-align: center;
@@ -89,13 +93,40 @@ main {
     grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: 50px;
     gap: 5px;
-    > div {
-      background-color: var(--white);
-      align-content: center;
+    & .elegido {
+      background-color: var(--background-carton);
       > p {
-        font-size: 1.5rem;
-        text-align: center;
+        color: var(--color-text-elegido);
+        text-decoration: line-through;
       }
     }
+  }
+}
+
+.numero {
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  align-content: center;
+  min-inline-size: 46.7px;
+  transition: opacity 0.8s linear;
+  > p {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+}
+.bingo {
+  align-content: center;
+  & .numero {
+    margin: auto;
+    inline-size: max-content;
+    padding: 10px;
+    box-shadow: -0 1px 5px var(--background-main-black);
+    cursor: pointer;
+  }
+}
+
+@starting-style {
+  .numero {
+    opacity: 0;
   }
 }
