@@ -1,23 +1,61 @@
-(() => {
-  const main = document.querySelector("main");
-  const contenedorNumerosEscogidos = main.querySelector(".numeros-escogidos");
-  const templateNumero = document.querySelector("#template-numero-carton");
-  const template = document.querySelector("#template-carton");
-  const { firstElementChild: jugador } = template.content.cloneNode(true);
-  const { firstElementChild: ordenador } = template.content.cloneNode(true);
+import { Carton } from "./carton.js";
+import { shuffle } from "./desornedar.js";
+import { CANTIDAD_NUMEROS_CARTON, saltos, valores } from "./utils.js";
 
-  construirCartones("player", jugador, templateNumero);
-  construirCartones("cpu", ordenador, templateNumero);
-  main.insertAdjacentElement("afterbegin", jugador);
-  contenedorNumerosEscogidos.insertAdjacentElement("beforebegin", ordenador);
+let count = 0;
+let valorBingo = 0;
+
+const numJugador = shuffle(saltos).at(Math.floor(Math.random() * 6));
+const numOrdenador = shuffle(saltos).at(Math.floor(Math.random() * 6));
+
+const cartonJugador = shuffle(valores).slice(
+  numJugador,
+  numJugador + CANTIDAD_NUMEROS_CARTON,
+);
+
+const cartonOrdenador = shuffle(valores).slice(
+  numOrdenador,
+  numOrdenador + CANTIDAD_NUMEROS_CARTON,
+);
+
+const main = document.querySelector("main");
+const contenedorNumerosEscogidos = main.querySelector(".numeros-escogidos");
+const { firstElementChild: sacarNumero } = document.querySelector(".bingo");
+
+const jugador = new Carton("player", cartonJugador);
+const ordenador = new Carton("cpu", cartonOrdenador);
+
+(() => {
+  main.insertAdjacentElement("afterbegin", jugador.carton);
+  contenedorNumerosEscogidos.insertAdjacentElement(
+    "beforebegin",
+    ordenador.carton,
+  );
+
+  window.addEventListener("keypress", ({ code }) => {
+    if (code === "Space") bingo();
+  });
+
+  sacarNumero.addEventListener("click", () => bingo());
 })();
 
-function construirCartones(nombre, elemento, templateNumero) {
-  const titulo = elemento.querySelector("h2");
-  titulo.textContent = nombre.toUpperCase();
-  for (let e = 0; e < 15; e++) {
-    const { firstElementChild: div } = templateNumero.content.cloneNode(true);
-    div.firstElementChild.textContent = e + 1;
-    elemento.lastElementChild.append(div);
-  }
+function bingo() {
+  const child = sacarNumero.querySelector("p");
+  valorBingo = valores.at(count);
+  child.textContent = valorBingo;
+  count++;
+  const [cartonContenedorJugador, cartonContenedorOrdenador] = [
+    ...main.querySelectorAll(".carton-numeros"),
+  ];
+  validarNumeroBingo(Array.from(cartonContenedorJugador.children));
+  validarNumeroBingo(Array.from(cartonContenedorOrdenador.children));
+  contenedorNumerosEscogidos.append(sacarNumero.cloneNode(true));
+}
+
+function validarNumeroBingo(children) {
+  children.forEach((contenedor) => {
+    const { textContent: value } = contenedor;
+    if (valorBingo === Number.parseInt(value))
+      contenedor.classList.add("elegido");
+  });
 }
