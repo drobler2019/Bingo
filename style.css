@@ -24,21 +24,22 @@
 }
 
 body {
-  min-block-size: 100vh;
+  block-size: 100vh;
   font-family: var(--font-family);
   background-image: linear-gradient(
     to bottom,
     var(--background-main),
     var(--background-main-black)
   );
-  align-content: center;
 }
 
 main {
+  block-size: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 300px;
   align-items: center;
+  align-content: center;
   justify-items: center;
   row-gap: 20px;
   padding-inline: 50px;
@@ -123,6 +124,25 @@ main {
     box-shadow: -0 1px 5px var(--background-main-black);
     cursor: pointer;
   }
+}
+
+dialog {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  inline-size: 200px;
+  block-size: 100px;
+  align-content: center;
+  text-align: center;
+  > form {
+    position: absolute;
+    inset-inline-end: 5px;
+    inset-block-start: 5px;
+  }
+}
+
+dialog::backdrop {
+  background: linear-gradient(#000d, #000a);
 }
 
 @starting-style {
